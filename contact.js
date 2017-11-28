@@ -27,6 +27,7 @@ $(document).on("click", "a", function(e){
 
 				$(document).on("click",".cancel", function(e){
 					self.showContactList();
+					$('.edit-form').parent().remove();
 					$('.settings-row').slideDown(500);
 				});
 
