@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<title>Contact Manager</title>
+	<link rel="stylesheet" href="./style.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+	<script src="./contact.js"></script>
+</head>
+<body>
+	<header class="bs-header">
+		<div class="header-container">
+			<h1> Contact Manager </h1>
+			<p> Using Handlebars, jQuery, and LocalStorage </p>
+		</div>
+	</header>
+	<div class="settings-row">
+		<a id="add-button" class="button" href="#">Add Contact </a>
+		<input type='text' name='search' id='search' value='' placeholder='Search' />
+	</div>
+
+	<main>
+			<ul class="container" id="contacts">
+			</ul>
+
+				<div class="form">
+					<h2> Create Contact </h2>
+					<form id="add-form" action="#" method="post">
+						<fieldset>
+							<dl>
+								<dt><label for="name">Full Name:</label></dt>
+								<dd><input type="text" name="name" id="name"></dd>
+							</dl>
+							<dl>
+								<dt><label for="email">Email Address:</label></dt>
+								<dd><input type="email" name="email" id="email"></dd>
+							</dl>
+							<dl>
+								<dt><label for="phone">Phone Number:</label></dt>
+								<dd><input type="tel" name="phone" id="phone"></dd>
+							</dl>
+							<input class="button" type="submit" value="Submit"/>
+							<a id="cancel" class="button" href="#">Cancel</a>
+						</fieldset>
+					</form>
+				</div>
+		</main>
+
+
+		<script id="contact-list" type="text/x-handlebars">
+			{{#each contacts}}
+			{{> contact}}
+			{{/each}}
+		</script>
+		<script id="contact" type="text/x-handlebars">
+			<div data-id={{id}} class="contact-item">
+				<h2>{{name}}</h2>
+				<h4>Phone Number:</h4>
+				{{phone}}
+				<h4>Email:</h4>
+				{{email}}
+				<div class="button-container">
+					<span id="edit" data-id={{id}} class="button small">Edit</span>
+					<span id="delete" data-id={{id}} class="button small">Delete</span>
+				</div>
+			</div>
+		</script>
+
+</body>
+</html>
