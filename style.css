@@ -182,3 +182,8 @@ main {
 .contact-item h2 {
 	font-weight: normal;
 }
+
+.tag {
+	text-decoration: none;
+	color:#563d7c;
+}

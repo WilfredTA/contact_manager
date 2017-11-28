@@ -38,6 +38,13 @@
 				{{phone}}
 				<h4>Email:</h4>
 				{{email}}
+				<h4>Tags: </h4>
+					{{#if tags}}
+						{{tags}}
+					{{else}}
+						<p>No tags have
+						been added!</p>
+					{{/if}}
 				<div class="button-container">
 					<span  data-id={{id}} class="button small edit">Edit</span>
 					<span  data-id={{id}} class="button small delete">Delete</span>
@@ -61,12 +68,20 @@
 								<dt><label for="phone">Phone Number:</label></dt>
 								<dd><input type="tel" name="phone" id="phone" value="{{phone}}"></dd>
 							</dl>
+							<dl>
+								<dt><label for="tags">Tags:</label></dt>
+								<dd><input type="text" name="tags" id="tags" value="{{tags}}"></dd>
+							</dl>
+
 							<input type='hidden' name='id' value={{id}} />
 							<input class="button" type="submit" value="Submit" />
 							<a class="button cancel" href="#">Cancel</a>
 						</fieldset>
 					</form>
 				</div>
+			</script>
+			<script id="tag-partial" type="text/x-handlebars">
+				{{tag}}
 			</script>
 
 

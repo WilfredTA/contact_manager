@@ -3,11 +3,12 @@ $(document).on("click", "a", function(e){
 });
 
 
-	function Contact(name, email, phone, id) {
+	function Contact(name, email, phone, tags, id) {
 		this.name = name || '';
 		this.email = email || '';
 		this.phone = phone || '';
 		this.id = id;
+		this.tags = tags || [];
 	};
 
 	function App(){
@@ -22,7 +23,7 @@ $(document).on("click", "a", function(e){
 				var self = this;
 				$("#add-button").on("click", function(e){
 					self.lastId += 1;
-					var contact = new Contact('','','', self.lastId)
+					var contact = new Contact('','','', [], self.lastId)
 					$("#contacts").slideUp(500);
 					$(".settings-row").slideUp(500);
 					
@@ -31,10 +32,6 @@ $(document).on("click", "a", function(e){
 						setTimeout(function(){
 							$('.form-container').fadeIn(500);
 						}, 900)
-						
-					
-					
-					
 
 				});
 
@@ -50,6 +47,7 @@ $(document).on("click", "a", function(e){
 					$(this).find(":input").each(function(idx, inp){
 						input.push($(inp).val());
 					});
+					console.log(input)
 					self.add.apply(self, input);
 					self.showContactList();
 					$('.settings-row').slideDown(500);
@@ -73,7 +71,6 @@ $(document).on("click", "a", function(e){
 						self.searchTerm = '';
 					}
 
-					console.log(self.searchTerm);
 					self.search();
 
 				});
@@ -82,7 +79,7 @@ $(document).on("click", "a", function(e){
 					var contact = self.getContact(id);
 					
 					
-	
+
 					$('main').append(self.renderForm(contact));
 					$('.form').addClass('edit-form');
 					$("#contacts").slideUp(500);
@@ -99,7 +96,6 @@ $(document).on("click", "a", function(e){
 					$(this).find(":input").each(function(idx, inp){
 						input.push($(inp).val());
 					});
-					console.log(input)
 					self.updateContact.apply(self, input)
 					self.showContactList();
 					$('.settings-row').slideDown(500);
@@ -112,9 +108,11 @@ $(document).on("click", "a", function(e){
 				return contact.id === id;
 			})[0];
 		},
-		updateContact: function(name, email, phone, id){
+		updateContact: function(name, email, phone, tags, id){
 			id = +id;
-			var contact = new Contact(name, email, phone, id);
+			tags = tags.split(',')
+			var contact = new Contact(name, email, phone, tags, id);
+			console.log(contact)
 			this.contactList.forEach(function(el, idx){
 				if (el.id === contact.id){
 					this.contactList[idx] = contact;
@@ -123,19 +121,21 @@ $(document).on("click", "a", function(e){
 			this.saveToLocalStorage();
 		},
 		search: function() {
+			console.log(this.contactList)
 			var term = new RegExp(this.searchTerm, 'i');
 			if (term === '') {
 				this.updateContactView(this.contactList);
 			} else {
 				var new_list = this.contactList.filter(function(contact){
-					return contact.name.match(term);
+					return contact.name.match(term) || contact.tags.join('').match(term);
 				})
 				this.updateContactView(new_list);
 			};
 		},
-		add: function(name, email, phone, id){
+		add: function(name, email, phone, tags, id){
 			id = +id;
-			var contact = new Contact(name, email, phone, id);
+			tags = tags.split(',')
+			var contact = new Contact(name, email, phone, tags, id);
 			this.contactList.push(contact);
 			this.showContactList();
 			this.saveToLocalStorage();
@@ -170,6 +170,8 @@ $(document).on("click", "a", function(e){
 			this.renderContacts = Handlebars.compile(contact_template);
 			var form_template = $("#form-template").html();
 			this.renderForm = Handlebars.compile(form_template);
+			var tag_partial = $("#tag-partial").html();
+			Handlebars.registerPartial('tag', tag_partial);
 		},
 		deleteFromContacts: function(id) {
 			for (var i = 0; i < this.contactList.length; i++){
@@ -187,7 +189,6 @@ $(document).on("click", "a", function(e){
 			this.registerTemplates();
 			this.loadFromLocalStorage();
 		}
-
 	};
 
 
