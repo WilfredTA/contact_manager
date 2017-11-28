@@ -59,9 +59,10 @@ body {
 	border-radius: 10px;
 	vertical-align: middle;
 	cursor: pointer;
+	text-align: center;
 }
 
-.button:hover {
+.button:hover, .form input[type="submit"]:hover {
 	background-color:#563d7c;
 	color: #ffffff;
 }
@@ -103,8 +104,9 @@ body {
 fieldset {
 	border: none;
 }
-.form .button {
+.form .button{
 	margin: 50px 20px 0 20px;
+	width: 200px;
 }
 
 dt, dd {
@@ -123,13 +125,17 @@ dt, dd {
 }
 
 .form input {
-	width: 700px;
+	width: 500px;
 	font: 14px lighter Helvetica, sans-serif;
 	color:#563d7c;
 }
 
 .form input[type="submit"] {
-	width: inherit;
+	width: 200px;
+	margin-left: 150px;
+	font: 18px normal Helvetica, sans-serif;
+	background-color: #fff;
+	padding: 15px;
 }
 
 .form input[name="name"]{
@@ -138,6 +144,13 @@ dt, dd {
 
 .form input[name="phone"]{
 	margin-left: -4px;
+}
+
+.form {
+	position: absolute;
+	margin-left: 50%;
+	left: -400px;
+
 }
 
 main {
