@@ -62,7 +62,51 @@ $(document).on("click", "a", function(e){
 					console.log(self.searchTerm);
 					self.search();
 
+				});
+				$(document).on("click", '.edit', function(e){
+					var id = +$(this).attr('data-id');
+					var contact = self.getContact(id);
+	
+
+					$('main').append(self.renderForm(contact));
+					$("#contacts").slideUp(500);
+					$(".settings-row").slideUp(500);
+					$("#add-form").parent().slideUp(500);
+					
+				});
+
+				$(document).on("submit", ".edit-form", function(e){
+					e.preventDefault();
+					var input = [];
+					$(this).find(":input").each(function(idx, inp){
+						input.push($(inp).val());
+					});
+					input[0] = +input[0];
+
+					self.updateContact.apply(self, input)
+					self.showContactList();
+					$('.settings-row').slideDown(500);
+					$('.edit-form').parent().remove();
+
 				})
+		},
+		getContact: function(id){
+			return this.contactList.filter(function(contact){
+				return contact.id === id;
+			})[0];
+		},
+		updateContact: function(id, name, email, phone){
+			var contact = new Contact(name, email, phone, id);
+			this.contactList.forEach(function(el, idx){
+				if (el.id === contact.id){
+					console.log(el)
+					console.log(contact)
+					console.log(idx)
+					this.contactList[idx] = contact;
+				}
+			}, this);
+			this.saveToLocalStorage();
+
 		},
 		search: function() {
 			var term = new RegExp(this.searchTerm, 'i');
@@ -102,8 +146,10 @@ $(document).on("click", "a", function(e){
 		registerTemplates: function() {
 			var partial = $("#contact").html();
 			Handlebars.registerPartial('contact', partial);
-			var template = $("#contact-list").html();
-			this.renderContacts = Handlebars.compile(template);
+			var contact_template = $("#contact-list").html();
+			this.renderContacts = Handlebars.compile(contact_template);
+			var edit_template = $("#edit-form").html();
+			this.renderForm = Handlebars.compile(edit_template);
 		},
 		deleteFromContacts: function(id) {
 			for (var i = 0; i < this.contactList.length; i++){

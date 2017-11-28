@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+<!DOCTYPE html ch>
 <html lang="en-US">
 <head>
 	<title>Contact Manager</title>
+	<meta charset="UTF-8">
 	<link rel="stylesheet" href="./style.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
@@ -60,11 +61,36 @@
 				<h4>Email:</h4>
 				{{email}}
 				<div class="button-container">
-					<span id="edit" data-id={{id}} class="button small">Edit</span>
+					<span  data-id={{id}} class="button small edit">Edit</span>
 					<span id="delete" data-id={{id}} class="button small">Delete</span>
 				</div>
 			</div>
 		</script>
+		<script id="edit-form" type="text/x-handlebars">
+			<div class="form">
+					<h2> Edit Contact </h2>
+					<form class="edit-form" action="#" method="post">
+						<input type='hidden' name='id' value={{id}} />
+						<fieldset>
+							<dl>
+								<dt><label for="name">Full Name:</label></dt>
+								<dd><input type="text" name="name" id="name" value={{name}}></dd>
+							</dl>
+							<dl>
+								<dt><label for="email">Email Address:</label></dt>
+								<dd><input type="email" name="email" id="email" value={{email}}></dd>
+							</dl>
+							<dl>
+								<dt><label for="phone">Phone Number:</label></dt>
+								<dd><input type="tel" name="phone" id="phone" value={{phone}}></dd>
+							</dl>
+							<input class="button" type="submit" value="Submit"/>
+							<a id="cancel" class="button" href="#">Cancel</a>
+						</fieldset>
+					</form>
+				</div>
+			</script>
+
 
 </body>
 </html>
