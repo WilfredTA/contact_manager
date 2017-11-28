@@ -23,28 +23,6 @@
 	<main>
 			<ul class="container" id="contacts">
 			</ul>
-
-				<div class="form">
-					<h2> Create Contact </h2>
-					<form id="add-form" action="#" method="post">
-						<fieldset>
-							<dl>
-								<dt><label for="name">Full Name:</label></dt>
-								<dd><input type="text" name="name" id="name"></dd>
-							</dl>
-							<dl>
-								<dt><label for="email">Email Address:</label></dt>
-								<dd><input type="email" name="email" id="email"></dd>
-							</dl>
-							<dl>
-								<dt><label for="phone">Phone Number:</label></dt>
-								<dd><input type="tel" name="phone" id="phone"></dd>
-							</dl>
-							<input class="button" type="submit" value="Submit"/>
-							<a  class="button cancel" href="#">Cancel</a>
-						</fieldset>
-					</form>
-				</div>
 		</main>
 
 
@@ -62,15 +40,14 @@
 				{{email}}
 				<div class="button-container">
 					<span  data-id={{id}} class="button small edit">Edit</span>
-					<span id="delete" data-id={{id}} class="button small">Delete</span>
+					<span  data-id={{id}} class="button small delete">Delete</span>
 				</div>
 			</div>
 		</script>
-		<script id="edit-form" type="text/x-handlebars">
-			<div class="form">
-					<h2> Edit Contact </h2>
-					<form class="edit-form" action="#" method="post">
-						<input type='hidden' name='id' value={{id}} />
+		<script id="form-template" type="text/x-handlebars">
+			<div class="form-container">
+					<h2>Contact Information </h2>
+					<form class="form" action="#" method="post">
 						<fieldset>
 							<dl>
 								<dt><label for="name">Full Name:</label></dt>
@@ -84,7 +61,8 @@
 								<dt><label for="phone">Phone Number:</label></dt>
 								<dd><input type="tel" name="phone" id="phone" value={{phone}}></dd>
 							</dl>
-							<input class="button" type="submit" value="Submit"/>
+							<input type='hidden' name='id' value={{id}} />
+							<input class="button" type="submit" value="Submit" />
 							<a class="button cancel" href="#">Cancel</a>
 						</fieldset>
 					</form>
