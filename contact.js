@@ -25,7 +25,7 @@ $(document).on("click", "a", function(e){
 					$(".settings-row").slideUp(500);
 				});
 
-				$("#cancel").on("click", function(e){
+				$(document).on("click",".cancel", function(e){
 					self.showContactList();
 					$('.settings-row').slideDown(500);
 				});
