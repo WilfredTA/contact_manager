@@ -3,6 +3,11 @@ body {
 	margin: 0;
 	font-weight: lighter;
 	width: 100vw;
+	height: auto;
+}
+
+script {
+	display: none;
 }
 
 .bs-header{
@@ -140,6 +145,19 @@ dt, dd {
 	font: 18px normal Helvetica, sans-serif;
 	background-color: #fff;
 	padding: 15px;
+}
+footer {
+
+	font: 18px normal Helvetica, sans-serif;
+	padding-top: 10px;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	top: 100%;
+	left: 80px;
+	border-top: 1px solid #c0c0c0;
+	z-index: 10001;
+
 }
 
 .form input[name="name"]{

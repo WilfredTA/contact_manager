@@ -11,8 +11,55 @@ $(document).on("click", "a", function(e){
 		this.tags = tags || [];
 	};
 
+	function ContactList(){
+		this.contacts = [];
+	}
+
+	ContactList.prototype = {
+		getContact: function(id){
+			return this.contacts.filter(function(contact){
+				return contact.id === id;
+			})[0];
+		},
+
+		add: function(name, email, phone, tags, id){
+			id = +id;
+			tags = tags.split(',')
+			var contact = new Contact(name, email, phone, tags, id);
+			this.contacts.push(contact);
+			this.saveToLocalStorage();
+		},
+		saveToLocalStorage: function() {
+			window.localStorage.setItem('contacts', JSON.stringify(this.contacts));
+		},
+		loadFromLocalStorage: function() {
+			var contacts = JSON.parse(window.localStorage.getItem('contacts')) || [];
+			this.contacts = contacts;
+		},
+		update: function(name, email, phone, tags, id){
+			id = +id;
+			tags = tags.split(',')
+			var contact = new Contact(name, email, phone, tags, id);
+			this.contacts.forEach(function(el, idx){
+				if (el.id === contact.id){
+					this.contacts[idx] = contact;
+				}
+			}, this);
+			this.saveToLocalStorage();
+		},
+		delete: function(id) {
+			for (var i = 0; i < this.contacts.length; i++){
+				if (this.contacts[i].id === id) {
+					this.contacts.splice(i, 1);
+				}
+			};
+			this.saveToLocalStorage();
+		}
+
+	}
+
 	function App(){
-		this.contactList = [];
+		this.contactList = new ContactList();
 		this.lastId = 0;
 		this.init();
 		this.searchTerm = '';
@@ -31,7 +78,7 @@ $(document).on("click", "a", function(e){
 						$('.form').addClass("add-form");
 						setTimeout(function(){
 							$('.form-container').fadeIn(500);
-						}, 900)
+						}, 500)
 
 				});
 
@@ -65,7 +112,7 @@ $(document).on("click", "a", function(e){
 						input.push($(inp).val());
 					});
 					console.log(input)
-					self.add.apply(self, input);
+					self.addContact.apply(self, input);
 					self.showContactList();
 					$('.settings-row').slideDown(500);
 					self.removeForms();
@@ -103,7 +150,7 @@ $(document).on("click", "a", function(e){
 					$(".settings-row").slideUp(500);
 					setTimeout(function(){
 							$('.form-container').fadeIn(500);
-					}, 900)
+					}, 500)
 					
 				});
 
@@ -121,44 +168,28 @@ $(document).on("click", "a", function(e){
 				})
 		},
 		getContact: function(id){
-			return this.contactList.filter(function(contact){
-				return contact.id === id;
-			})[0];
+			return this.contactList.getContact(id);
 		},
 		updateContact: function(name, email, phone, tags, id){
-			id = +id;
-			tags = tags.split(',')
-			var contact = new Contact(name, email, phone, tags, id);
-			console.log(contact)
-			this.contactList.forEach(function(el, idx){
-				if (el.id === contact.id){
-					this.contactList[idx] = contact;
-				}
-			}, this);
-			this.saveToLocalStorage();
-		},
-		alertMessage: function(message){
-			alert(message);
+			this.contactList.update(name, email, phone, tags, id);
+			this.updateContactView(this.contactList.contacts);
 		},
 		search: function() {
 			console.log(this.contactList)
 			var term = new RegExp(this.searchTerm, 'i');
 			if (term === '') {
-				this.updateContactView(this.contactList);
+				this.updateContactView(this.contactList.contacts);
 			} else {
-				var new_list = this.contactList.filter(function(contact){
+				var new_list = this.contactList.contacts.filter(function(contact){
 					return contact.name.match(term) || contact.tags.join('').match(term);
 				})
 				this.updateContactView(new_list);
 			};
 		},
-		add: function(name, email, phone, tags, id){
-			id = +id;
-			tags = tags.split(',')
-			var contact = new Contact(name, email, phone, tags, id);
-			this.contactList.push(contact);
+		addContact: function(name, email, phone, tags, id){
+			this.contactList.add(name, email, phone, tags, id);
+			this.updateContactView(this.contactList.contacts);
 			this.showContactList();
-			this.saveToLocalStorage();
 		},
 
 		showContactList: function() {
@@ -168,19 +199,18 @@ $(document).on("click", "a", function(e){
 			var html = this.renderContacts({contacts: arrayOfContacts});
 			$("#contacts").html(html);
 		},
-		saveToLocalStorage: function() {
-			window.localStorage.setItem('contactList', JSON.stringify(this.contactList));
-			this.updateContactView(this.contactList);
+		saveContacts: function() {
+			this.contactList.saveToLocalStorage();
+			this.updateContactView(this.contactList.contacts);
 		},
-		loadFromLocalStorage: function() {
-			var contactList = JSON.parse(window.localStorage.getItem('contactList')) || [];
-			this.contactList = contactList;
+		loadContacts: function() {
+			this.contactList.loadFromLocalStorage();
 			this.updateLastId();
-			this.updateContactView(this.contactList);
+			this.updateContactView(this.contactList.contacts);
 		},
 		updateLastId: function() {
-			if (this.contactList.length){
-				this.lastId = +this.contactList[this.contactList.length-1].id || 0;
+			if (this.contactList.contacts.length){
+				this.lastId = +this.contactList.contacts[this.contactList.contacts.length-1].id || 0;
 			};
 		},
 		registerTemplates: function() {
@@ -194,12 +224,7 @@ $(document).on("click", "a", function(e){
 			Handlebars.registerPartial('tag', tag_partial);
 		},
 		deleteFromContacts: function(id) {
-			for (var i = 0; i < this.contactList.length; i++){
-				if (this.contactList[i].id === id) {
-					this.contactList.splice(i, 1);
-				}
-			};
-			this.saveToLocalStorage();
+			this.contactList.delete(id);
 		},
 		removeForms: function() {
 			$('.form-container:visible').remove();
@@ -223,7 +248,7 @@ $(document).on("click", "a", function(e){
 		init: function() {
 			this.bindEvents();
 			this.registerTemplates();
-			this.loadFromLocalStorage();
+			this.loadContacts();
 		}
 	};
 
