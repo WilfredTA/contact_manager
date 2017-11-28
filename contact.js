@@ -23,10 +23,18 @@ $(document).on("click", "a", function(e){
 				$("#add-button").on("click", function(e){
 					self.lastId += 1;
 					var contact = new Contact('','','', self.lastId)
-					$('main').append(self.renderForm(contact))
-					$('.form').addClass("add-form");
 					$("#contacts").slideUp(500);
 					$(".settings-row").slideUp(500);
+					
+						$('main').append(self.renderForm(contact));
+						$('.form').addClass("add-form");
+						setTimeout(function(){
+							$('.form-container').fadeIn(500);
+						}, 900)
+						
+					
+					
+					
 
 				});
 
@@ -79,6 +87,9 @@ $(document).on("click", "a", function(e){
 					$('.form').addClass('edit-form');
 					$("#contacts").slideUp(500);
 					$(".settings-row").slideUp(500);
+					setTimeout(function(){
+							$('.form-container').fadeIn(500);
+					}, 900)
 					
 				});
 
