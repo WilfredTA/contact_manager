@@ -184,7 +184,6 @@ $(document).on("click", "a", function(e){
 			this.updateContactView(this.contactList.contacts);
 		},
 		search: function() {
-			console.log(this.contactList)
 			var term = new RegExp(this.searchTerm, 'i');
 			if (term === '') {
 				this.updateContactView(this.contactList.contacts);
@@ -200,7 +199,6 @@ $(document).on("click", "a", function(e){
 			this.updateContactView(this.contactList.contacts);
 			this.showContactList();
 		},
-
 		showContactList: function() {
 			$("#contacts").slideDown(500);
 		},
@@ -219,7 +217,7 @@ $(document).on("click", "a", function(e){
 		},
 		updateLastId: function() {
 			if (this.contactList.contacts.length){
-				this.lastId = +this.contactList.contacts[this.contactList.contacts.length-1].id || 0;
+				this.lastId = +this.contactList.contacts[this.contactList.contacts.length-1].id;
 			};
 		},
 		registerTemplates: function() {
