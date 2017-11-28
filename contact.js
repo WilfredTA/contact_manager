@@ -56,7 +56,7 @@ $(document).on("click", "a", function(e){
 			this.saveToLocalStorage();
 		}
 
-	}
+	};
 
 	function App(){
 		this.contactList = new ContactList();
