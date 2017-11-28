@@ -35,6 +35,23 @@ $(document).on("click", "a", function(e){
 
 				});
 
+				$(document).on("blur", "input[type='email']", function(e){
+					if (self.validateEmail($(this).val())) {
+						$(this).removeClass('error');
+					} else {
+						$(this).addClass('error')
+					}
+				});
+				$(document).on("blur", "input[type='tel']", function(e){
+					if (self.validatePhone($(this).val())) {
+						$(this).removeClass('error');
+						self.enableFormSubmission();
+					} else {
+						$(this).addClass('error');
+						self.preventFormSubmission();
+					}
+				})
+
 				$(document).on("click",".cancel", function(e){
 					self.showContactList();
 					self.removeForms();
@@ -120,6 +137,9 @@ $(document).on("click", "a", function(e){
 			}, this);
 			this.saveToLocalStorage();
 		},
+		alertMessage: function(message){
+			alert(message);
+		},
 		search: function() {
 			console.log(this.contactList)
 			var term = new RegExp(this.searchTerm, 'i');
@@ -183,6 +203,22 @@ $(document).on("click", "a", function(e){
 		},
 		removeForms: function() {
 			$('.form-container:visible').remove();
+		},
+		validateEmail: function(value){
+			var tester = new RegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/);
+			return tester.test(value);
+		},
+		validatePhone: function(value){
+			var tester = new RegExp(/^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/);
+			return tester.test(value);
+		},
+		preventFormSubmission: function() {
+			$(".button[type='submit']").hide();
+			$(".cancel").css("width", "600px");
+		},
+		enableFormSubmission: function() {
+			$(".button[type='submit']").show();
+			$(".cancel").css("width", "200px");
 		},
 		init: function() {
 			this.bindEvents();
