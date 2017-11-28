@@ -24,10 +24,19 @@ $(document).on("click", "a", function(e){
 
 		add: function(name, email, phone, tags, id){
 			id = +id;
-			tags = tags.split(',')
+			tags = this.transformTags(tags);
 			var contact = new Contact(name, email, phone, tags, id);
 			this.contacts.push(contact);
 			this.saveToLocalStorage();
+		},
+		transformTags: function(tags) {
+			if (tags){
+				tags = tags.split(',');
+			} else {
+				tags = [];
+			};
+
+			return tags;
 		},
 		saveToLocalStorage: function() {
 			window.localStorage.setItem('contacts', JSON.stringify(this.contacts));
@@ -38,7 +47,7 @@ $(document).on("click", "a", function(e){
 		},
 		update: function(name, email, phone, tags, id){
 			id = +id;
-			tags = tags.split(',')
+			tags = this.transformTags(tags);
 			var contact = new Contact(name, email, phone, tags, id);
 			this.contacts.forEach(function(el, idx){
 				if (el.id === contact.id){
@@ -225,6 +234,7 @@ $(document).on("click", "a", function(e){
 		},
 		deleteFromContacts: function(id) {
 			this.contactList.delete(id);
+			this.updateContactView(this.contactList.contacts);
 		},
 		removeForms: function() {
 			$('.form-container:visible').remove();
