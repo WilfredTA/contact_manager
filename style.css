@@ -150,6 +150,10 @@ dt, dd {
 	margin-left: -4px;
 }
 
+.form input[name="tags"]{
+	margin-left: 70px;
+}
+
 .form {
 	position: absolute;
 	margin-left: 50%;
