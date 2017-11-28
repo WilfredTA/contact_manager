@@ -78,8 +78,7 @@ $(document).on("click", "a", function(e){
 		bindEvents: function() {
 				var self = this;
 				$("#add-button").on("click", function(e){
-					self.lastId += 1;
-					var contact = new Contact('','','', [], self.lastId)
+					var contact = new Contact('','','', [], self.lastId+1)
 					$("#contacts").slideUp(500);
 					$(".settings-row").slideUp(500);
 					
@@ -116,11 +115,12 @@ $(document).on("click", "a", function(e){
 
 				$(document).on("submit", '.add-form', function(e){
 					e.preventDefault();
+
 					var input = [];
 					$(this).find(":input").each(function(idx, inp){
 						input.push($(inp).val());
 					});
-					console.log(input)
+
 					self.addContact.apply(self, input);
 					self.showContactList();
 					$('.settings-row').slideDown(500);
@@ -195,6 +195,7 @@ $(document).on("click", "a", function(e){
 			};
 		},
 		addContact: function(name, email, phone, tags, id){
+			self.lastId += 1;
 			this.contactList.add(name, email, phone, tags, id);
 			this.updateContactView(this.contactList.contacts);
 			this.showContactList();
