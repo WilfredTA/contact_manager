@@ -72,6 +72,8 @@ $(document).on("click", "a", function(e){
 				$(document).on("click", '.edit', function(e){
 					var id = +$(this).attr('data-id');
 					var contact = self.getContact(id);
+					
+					
 	
 					$('main').append(self.renderForm(contact));
 					$('.form').addClass('edit-form');
